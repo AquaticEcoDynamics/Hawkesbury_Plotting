@@ -62,6 +62,8 @@ add_trigger_values = 1;
 
 trigger_file = 'TriggerValues_HN.xlsx';
 
+mean_style = 2;
+plotmodel = 0;
 
 
 istitled = 1;

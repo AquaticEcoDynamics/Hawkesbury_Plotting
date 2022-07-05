@@ -300,7 +300,7 @@ end
 
 %--------------------------------------------------------------------------
 for var = plot_array%start_plot_ID:end_plot_ID
-    
+    [units,ylab] = tfv_yLAB(varname{var})
     savedir = [outputdirectory,varname{var},'/'];
     mkdir(savedir);
     mkdir([savedir,'eps/']);
@@ -982,7 +982,7 @@ for var = plot_array%start_plot_ID:end_plot_ID
         %          end
         
         grid on;
-        ylab
+        %ylab
         if isConv
             if isylabel
                 if add_human
@@ -1029,7 +1029,7 @@ for var = plot_array%start_plot_ID:end_plot_ID
                 if vdataout(vd).polygon == site & ...
                         isfield(vdataout(vd).Data,varname{var})
                     
-                    [vd_data,~,~] = tfv_Unit_Conversion(vdataout(vd).Data.(varname{var}).vdata,varname{var});
+                    [vd_data,~,ylab] = tfv_Unit_Conversion(vdataout(vd).Data.(varname{var}).vdata,varname{var});
                     
                     plot(vdataout(vd).Data.(varname{var}).Date,vd_data,...
                         vdataout(vd).plotcolor,'displayname',vdataout(vd).legend);

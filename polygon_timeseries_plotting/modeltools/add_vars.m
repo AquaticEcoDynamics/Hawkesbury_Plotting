@@ -47,5 +47,6 @@ for i = 1:length(newname)
         end
     end
 end
-        
+
+save('hawkesbury_all.mat','hawkesbury_all','-mat');
         

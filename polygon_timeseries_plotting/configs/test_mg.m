@@ -60,9 +60,11 @@ add_human = 0;
 
 add_trigger_values = 1;
 
+mean_style = 2;
+
 trigger_file = 'TriggerValues_HN.xlsx';
 
-
+plotmodel = 0;
 
 istitled = 1;
 isylabel = 1;
