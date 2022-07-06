@@ -134,9 +134,11 @@ if plotmodel
     allvars = tfv_infonetcdf(ncfile(1).name);
 end
 
-shp = shaperead(polygon_file);
+%shp = shaperead(polygon_file);
+%save shp.mat shp -mat;
 
-
+%stop
+load shp.mat;
 
 if ~exist('isFieldRange','var')
     isFieldRange = 0;
