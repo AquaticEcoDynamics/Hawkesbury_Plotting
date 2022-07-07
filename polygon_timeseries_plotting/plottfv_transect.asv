@@ -342,7 +342,6 @@ for var = plot_array
         
 		[raw(mod).data,fdata]  = import_netcdf_data(ncfile,mod,varname,var,fdata,loadname,allvars,single_precision,use_matfiles);clear functions
 		
-		
         tdata = tfv_readnetcdf(ncfile(mod).name,'timestep',1);
         all_cells(mod).X = double(tdata.cell_X);
         all_cells(mod).Y = double(tdata.cell_Y);
@@ -354,8 +353,8 @@ for var = plot_array
                 tttdata = tfv_readnetcdf(ncfile(mod).name,'names',{'cell_Zb';'H'}); clear functions
                 ttdata.D = tttdata.H - tttdata.cell_Zb;clear tttdata;
             else
-                [ii,jj] = size(raw(mod).data);
-                ttdata.D(1:length(tdata.cell_X,1:jj) = 100;
+                [ii,jj] = size(raw(mod).data.(varname{var}));
+                ttdata.D(1:length(tdata.cell_X),1:jj) = 100;
             end
         end
         
@@ -376,7 +375,7 @@ for var = plot_array
         if plotvalidation
             fielddata = [];
             fielddist = [];
-            [fielddata,fielddist] = tfv_getfielddata_boxregion(fdata,shp,def,isSurf,loadname,def.pdates(tim).value,isSpherical);
+            [fielddata,fielddist,fielddata_all,fielddist_all] = tfv_getfielddata_boxregion(fdata,shp,def,isSurf,loadname,def.pdates(tim).value,isSpherical);
             
         end
         clear functions;
@@ -403,7 +402,7 @@ for var = plot_array
                     set(fig2,'FaceAlpha', alph);
                 end
             end
-            plot(data(mod).dist,data(mod).pred_lim_ts(3,:),'color',def.median_line(mod).value,'linewidth',0.5,'DisplayName',[ncfile(mod).legend,' (Median)']);hold on
+            plot(data(mod).dist,data(mod).pred_lim_ts(3,:),'color',def.median_line(mod).value,'linewidth',0.5,'DisplayName',[ncfile(mod).legend,' (mean-cell)']);hold on
             
         end
         
@@ -412,10 +411,24 @@ for var = plot_array
         
         box_vars = [];
         if plotvalidation
-            if ~isempty(fielddata)
-                boxplot(fielddata,fielddist,'positions',unique(fielddist),'color','k','plotstyle','compact');
-                box_vars = findall(gca,'Tag','Box');
-            end
+%             if ~isempty(fielddata)
+%                 boxplot(fielddata,fielddist,'positions',unique(fielddist),'color','k','plotstyle','compact');
+%                 box_vars = findall(gca,'Tag','Box');
+%             end
+            scatter(fielddist,fielddata,'.','displayname','Field Data');
+            
+            udist = unique(fielddist_all);
+            hasplot = 1;
+            for kk = 1:length(udist)
+                
+                fff = find(fielddist_all == udist);
+                
+                Xi = prctile(fielddata_all(fff),[10]);
+                Xj = prctile(fielddata_all(fff),[90]);
+                if hasplot
+                    scatter(udist(kk),Xi,'k+','displayname',['Obs \itP_{',num2str(10),'}']);
+                    scatter(udist(kk),Xj,'k+','displayname',['Obs \itP_{',num2str(fieldprctile(1)),'}']);
+                fielddata_all,fielddist_all
         end
         
         if ~isempty(def.cAxis(var).value)

@@ -10,6 +10,7 @@ fielddata_matfile = 'modeltools/hawkesbury_all.mat';
 fielddata = 'hawkesbury_all';
 
 points_file = 'modeltools/Hawkesbury_Transect.shp';
+points_file_2 = 'modeltools/Transectpnt_HN_100.shp';
 
 
 t_yr = 2013;
@@ -17,10 +18,10 @@ int = 1;
 
 
 
-def.pdates(int).value = [datenum(t_yr,07,01) datenum(t_yr,09,01)];int = int + 1;
-def.pdates(int).value = [datenum(t_yr,09,01) datenum(t_yr,12,01)];int = int + 1;
-def.pdates(int).value = [datenum(t_yr,12,01) datenum(t_yr+1,03,01)];int = int + 1;
-def.pdates(int).value = [datenum(t_yr+1,03,01) datenum(t_yr+1,06,01)];int = int + 1;
+% def.pdates(int).value = [datenum(t_yr,07,01) datenum(t_yr,09,01)];int = int + 1;
+% def.pdates(int).value = [datenum(t_yr,09,01) datenum(t_yr,12,01)];int = int + 1;
+% def.pdates(int).value = [datenum(t_yr,12,01) datenum(t_yr+1,03,01)];int = int + 1;
+% def.pdates(int).value = [datenum(t_yr+1,03,01) datenum(t_yr+1,06,01)];int = int + 1;
 def.pdates(int).value = [datenum(t_yr,07,01) datenum(t_yr+1,07,01)];int = int + 1;
 
 
@@ -32,19 +33,19 @@ def.binfielddata = 1;
 % value will also make where on the line each polygon will be created. So
 % if radius == 5, then there will be a search polygon found at r*2, so 0km, 10km, 20km etc. In windy rivers these polygons may overlap.
 
-def.binradius = 5;% in km;
+def.binradius = 3;% in km;
 
 %distance from model polyline to be consided.
 %Field data further than specified distance won't be included.
 %Even if found with search radius. This is to attempt to exclude data
 %sampled outside of the domain.
 
-def.linedist = 500;%  in m
+%def.linedist = 1500;%  in m
 
-def.xlim = [0 180];% xlim in KM
+def.xlim = [0 160];% xlim in KM
 def.xticks = [0:20:180];
-def.xlabel = 'Distance from Ocean (km)';
-
+def.xlabel = 'Chainage in km';
+def.export_shapefile = 0;
 
 %varname = {...
 %    'TN_TP',...
@@ -117,14 +118,14 @@ trigger_file = 'TriggerValues_HN.xlsx';
 % Models___________________________________________________________________
 
 
-outputdirectory = 'Transects_aed/RAW/';
-htmloutput = ['Transects_aed/HTML/'];
+outputdirectory = 'Transects_aed_new2/RAW/';
+htmloutput = ['Transects_aed_new2/HTML/'];
 
 % ____________________________________________________________Configuration
 
 % Models___________________________________________________________________
 
- ncfile(1).name = 'C:\Users\00065525\AED Dropbox\Scratch\Hawkesbury/HN_Cal_2013_2014_3D_wq_subtype1_WQ.nc';
+ ncfile(1).name = 'D:\Cloud\AED Dropbox\Scratch\Hawkesbury/HN_Cal_2013_2014_3D_wq_subtype1_WQ.nc';
  ncfile(1).legend = 'Baseline';
 % %  
 %   ncfile(2).name = '/Projects2/Cattai/HN_CC_Cal_v1_A7_Scenarios/output/HN_Cal_2013_2016_3D_wq_Background_WQ.nc'; 
@@ -134,7 +135,7 @@ htmloutput = ['Transects_aed/HTML/'];
 %   ncfile(3).legend = 'Impact';
 %
  def.boxlegend = 'northwest';
-def.rangelegend = 'northeast';
+def.rangelegend = 'northwest';
 
 
 def.dimensions = [16 8]; % Width & Height in cm

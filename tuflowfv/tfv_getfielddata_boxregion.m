@@ -1,4 +1,4 @@
-function [fielddata,fielddist] = tfv_getfielddata_boxregion(fdata,shp,def,isSurf,varname,mtime,isSpherical)
+function [fielddata,fielddist,fielddata_all,fielddist_all] = tfv_getfielddata_boxregion(fdata,shp,def,isSurf,varname,mtime,isSpherical)
 
 %Convert from km to m
 binRad = def.binradius * 1000;
@@ -62,7 +62,8 @@ sites = fieldnames(fdata);
 
 fielddata = [];
 fielddist = [];
-
+fielddata_all = [];
+fielddist_all = [];
 
 for j = 1:length(pol)
     
@@ -94,13 +95,27 @@ for j = 1:length(pol)
                         ttt = find(fDepth(sss) < -2);
                     end
                     
+                    if isSurf
+                        ggg = find(fDepth >= -2);
+                    else
+                        ggg = find(fDepth < -2);
+                    end                    
                     disp(['Adding: ',num2str(length(ttt)),' from: ',sites{i}]);
                     
                     cdata = tfv_Unit_Conversion(fDat(sss(ttt)),varname);
+                    cdata_all = tfv_Unit_Conversion(fDat(ggg),varname);
+                    
+                    
                     cdist(1:length(ttt),1) = pol(j).Dist;
+                    cdist_all(1:length(ggg),1) = pol(j).Dist;
+                    
                     
                     fielddata = [fielddata;cdata];
-                    fielddist = [fielddist;cdist];
+                    fielddist = [fielddist;cdist];clear cdist
+                    
+                    fielddata_all = [fielddata_all;cdata_all];
+                    fielddist_all = [fielddist_all;cdist_all];clear cdist_all
+                    
                 end
             end
         end

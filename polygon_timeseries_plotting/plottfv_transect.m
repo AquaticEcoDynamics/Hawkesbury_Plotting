@@ -107,7 +107,7 @@ allvars = tfv_infonetcdf(ncfile(1).name);
 %shp = shaperead(points_file);
 
 load transect_shp.mat;
-
+load transect_shp_2.mat;
 % Need to add more colour palates. One for each simulation
 def.col_pal(1).value =[[176 190 197]./255;[162 190 197]./255;[150 190 197]./255];
 def.col_pal(2).value =[[215 204 200]./255; [200 204 200]./255; [185 204 200]./255 ];
@@ -375,7 +375,7 @@ for var = plot_array
         if plotvalidation
             fielddata = [];
             fielddist = [];
-            [fielddata,fielddist] = tfv_getfielddata_boxregion(fdata,shp,def,isSurf,loadname,def.pdates(tim).value,isSpherical);
+            [fielddata,fielddist,fielddata_all,fielddist_all] = tfv_getfielddata_boxregion_v2(fdata,shp,shp2,def,isSurf,loadname,def.pdates(tim).value,isSpherical);
             
         end
         clear functions;
@@ -411,9 +411,28 @@ for var = plot_array
         
         box_vars = [];
         if plotvalidation
-            if ~isempty(fielddata)
-                boxplot(fielddata,fielddist,'positions',unique(fielddist),'color','k','plotstyle','compact');
-                box_vars = findall(gca,'Tag','Box');
+%             if ~isempty(fielddata)
+%                 boxplot(fielddata,fielddist,'positions',unique(fielddist),'color','k','plotstyle','compact');
+%                 box_vars = findall(gca,'Tag','Box');
+%             end
+            scatter(fielddist,fielddata,'.','displayname','Field Data');
+            
+            udist = unique(fielddist_all);
+            hasplot = 1;
+            for kk = 1:length(udist)
+                
+                fff = find(fielddist_all == udist(kk));
+                %whos
+                Xi = prctile(fielddata_all(fff),[10]);
+                Xj = prctile(fielddata_all(fff),[90]);
+                if hasplot
+                    scatter(udist(kk),Xi,'k+','displayname',['Obs \itP_{',num2str(10),'}']);
+                    scatter(udist(kk),Xj,'k+','displayname',['Obs \itP_{',num2str(90),'}']);
+                    hasplot = 0;
+                else
+                    scatter(udist(kk),Xi,'k+','HandleVisibility','off');
+                    scatter(udist(kk),Xj,'k+','HandleVisibility','off');
+                end
             end
         end
         
@@ -542,8 +561,9 @@ for var = plot_array
 		yt = get(gca,'yticklabel');
 		set(gca,'yticklabel',yt,'fontsize',6);
 		
-        text(0.5,-0.075,def.xlabel,'fontsize',8,'color',[0.4 0.4 0.4],'horizontalalignment','center','units','normalized');
-
+ %        text(0.5,-0.45,def.xlabel,'fontsize',8,'color',[0.4 0.4 0.4],'horizontalalignment','center','units','normalized');
+         text(0.95,1.05,def.xlabel,'fontsize',8,'color',[0.4 0.4 0.4],'horizontalalignment','right','units','normalized');
+%       xlabel(def.xlabel,'fontsize',8,'color',[0.4 0.4 0.4]);
         
         set(gcf, 'PaperPositionMode', 'manual');
         set(gcf, 'PaperUnits', 'centimeters');
