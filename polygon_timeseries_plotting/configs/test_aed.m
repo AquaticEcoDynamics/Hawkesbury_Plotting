@@ -6,7 +6,7 @@
 fielddata_matfile = 'modeltools/hawkesbury_all.mat';
 fielddata = 'hawkesbury_all';
 
-polygon_file = 'modeltools/HN_Calibration_v3.shp';
+polygon_file = 'modeltools/HN_Calibration_v2.shp';
 
 
 
