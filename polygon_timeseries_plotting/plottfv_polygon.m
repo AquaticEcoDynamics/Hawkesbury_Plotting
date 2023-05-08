@@ -266,6 +266,8 @@ if plotmodel
 				clear tttdata;
             end
         end
+        whos
+        stop
         %ttdata = tfv_readnetcdf(ncfile(mod).name,'names','D');
         
         d_data(mod).D = single(ttdata.D);
